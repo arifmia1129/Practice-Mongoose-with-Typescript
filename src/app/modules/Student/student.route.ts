@@ -8,4 +8,6 @@ router
   .get(studentController.getStudent)
   .post(studentController.insertStudent);
 
+router.route('/:id').get(studentController.getStudentById);
+
 export default router;

@@ -1,5 +1,9 @@
 import { Request, Response } from 'express';
-import { getStudentService, insertStudentService } from './student.service';
+import {
+  getStudentByIdService,
+  getStudentService,
+  insertStudentService,
+} from './student.service';
 
 export const insertStudent = async (req: Request, res: Response) => {
   try {
@@ -30,10 +34,35 @@ export const getStudent = async (req: Request, res: Response) => {
       });
     }
 
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       message: 'Successfully get student information',
       students,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Couldn't get student information",
+      error: error.message,
+    });
+  }
+};
+
+export const getStudentById = async (req: Request, res: Response) => {
+  try {
+    const student = await getStudentByIdService(req.params.id);
+
+    if (!student) {
+      return res.status(400).json({
+        success: false,
+        message: "Couldn't get student information",
+      });
+    }
+
+    res.status(201).json({
+      success: true,
+      message: 'Successfully get student information',
+      student,
     });
   } catch (error) {
     res.status(400).json({

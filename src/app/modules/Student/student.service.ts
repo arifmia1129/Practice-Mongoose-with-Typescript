@@ -15,3 +15,9 @@ export const insertStudentService = async (
 export const getStudentService = async (): Promise<IStudent[] | []> => {
   return await Student.find();
 };
+
+export const getStudentByIdService = async (
+  payload: string
+): Promise<IStudent | null> => {
+  return await Student.findOne({ id: payload }, { name: 1, contactNo: 1 });
+};

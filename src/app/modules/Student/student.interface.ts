@@ -1,7 +1,9 @@
+import { HydratedDocument, Model } from 'mongoose';
+
 //   creating interface
 export interface IStudent {
   id: string;
-  role: 'student';
+  role: 'student' | 'admin';
   password: string;
   name: {
     firstName: string;
@@ -19,4 +21,8 @@ export interface IStudent {
 
 export interface IStudentMethods {
   fullName(): string;
+}
+
+export interface StudentModel extends Model<IStudent, {}, IStudentMethods> {
+  getAdmin(): Promise<HydratedDocument<IStudent[], IStudentMethods>>;
 }

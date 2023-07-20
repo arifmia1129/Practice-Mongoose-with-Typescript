@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import {
+  getAdminService,
   getStudentByIdService,
   getStudentService,
   insertStudentService,
@@ -43,6 +44,31 @@ export const getStudent = async (req: Request, res: Response) => {
     res.status(400).json({
       success: false,
       message: "Couldn't get student information",
+      error: error.message,
+    });
+  }
+};
+
+export const getAdmin = async (req: Request, res: Response) => {
+  try {
+    const students = await getAdminService();
+
+    if (!students.length) {
+      return res.status(400).json({
+        success: false,
+        message: "Couldn't get admin student information",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Successfully get admin student information',
+      students,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Couldn't get admin student information",
       error: error.message,
     });
   }

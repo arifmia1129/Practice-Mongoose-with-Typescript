@@ -1,7 +1,5 @@
 import { Model, Schema, model } from 'mongoose';
-import { IStudent, IStudentMethods } from './student.interface';
-
-type StudentModel = Model<IStudent, {}, IStudentMethods>;
+import { IStudent, IStudentMethods, StudentModel } from './student.interface';
 
 //   creating schema
 const studentSchema = new Schema<IStudent, StudentModel, IStudentMethods>({
@@ -12,7 +10,7 @@ const studentSchema = new Schema<IStudent, StudentModel, IStudentMethods>({
   },
   role: {
     type: String,
-    enum: ['student'],
+    enum: ['student', 'admin'],
     required: true,
   },
   password: {
@@ -59,6 +57,11 @@ const studentSchema = new Schema<IStudent, StudentModel, IStudentMethods>({
     type: String,
     required: true,
   },
+});
+
+// create static
+studentSchema.static('getAdmin', function getAdmin() {
+  return this.find({ role: 'admin' });
 });
 
 // create custom instance method

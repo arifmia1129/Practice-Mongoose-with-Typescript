@@ -7,7 +7,7 @@ export const insertStudentService = async (
   //   insert student into db
   const student = new Student(payload);
 
-  console.log(student.fullName());
+  // console.log(student.fullName());
 
   await student.save();
 
@@ -16,6 +16,10 @@ export const insertStudentService = async (
 
 export const getStudentService = async (): Promise<IStudent[] | []> => {
   return await Student.find();
+};
+
+export const getAdminService = async (): Promise<IStudent[] | []> => {
+  return await Student.getAdmin();
 };
 
 export const getStudentByIdService = async (

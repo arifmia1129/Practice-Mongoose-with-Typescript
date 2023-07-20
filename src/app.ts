@@ -1,6 +1,6 @@
 import express, { Application, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
-import { Schema } from 'mongoose';
+import { Schema, model } from 'mongoose';
 
 const app: Application = express();
 
@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
  * Finally database queries
  * */
 
-app.get('/', (req: Request, res: Response, next: NextFunction) => {
+app.get('/', async (req: Request, res: Response, next: NextFunction) => {
   //   creating interface
   interface IStudent {
     id: string;
@@ -40,7 +40,7 @@ app.get('/', (req: Request, res: Response, next: NextFunction) => {
   }
 
   //   creating schema
-  const userSchema = new Schema<IStudent>({
+  const studentSchema = new Schema<IStudent>({
     id: {
       type: String,
       required: true,
@@ -96,6 +96,41 @@ app.get('/', (req: Request, res: Response, next: NextFunction) => {
       required: true,
     },
   });
+
+  //   creating model
+  const Student = model<IStudent>('Student', studentSchema);
+
+  //   insert student into db
+  const student = new Student({
+    id: '123',
+    role: 'student',
+    password: '123456',
+    name: {
+      firstName: 'Md',
+      middleName: 'Arif',
+      lastName: 'Mia',
+    },
+    dateOfBirth: '1807-2002',
+    gender: 'male',
+    email: 'arif.vtti@gmail.com',
+    contactNo: '01849676331',
+    emergencyContactNo: '01832317844',
+    presentAddress: 'Gazipur, Dhaka',
+    permanentAddress: 'Gobindaganj, Gaibandha',
+  });
+
+  try {
+    await student.save();
+    res.status(200).json({
+      success: true,
+      message: 'Successfully inserted student',
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
 });
 
 export default app;

@@ -1,8 +1,10 @@
-import { Schema, model } from 'mongoose';
-import IStudent from './student.interface';
+import { Model, Schema, model } from 'mongoose';
+import { IStudent, IStudentMethods } from './student.interface';
+
+type StudentModel = Model<IStudent, {}, IStudentMethods>;
 
 //   creating schema
-const studentSchema = new Schema<IStudent>({
+const studentSchema = new Schema<IStudent, StudentModel, IStudentMethods>({
   id: {
     type: String,
     required: true,
@@ -59,7 +61,12 @@ const studentSchema = new Schema<IStudent>({
   },
 });
 
+// create custom instance method
+studentSchema.method('fullName', function fullName() {
+  return this.name.firstName + ' ' + this.name.lastName;
+});
+
 //   creating model
-const Student = model<IStudent>('Student', studentSchema);
+const Student = model<IStudent, StudentModel>('Student', studentSchema);
 
 export default Student;

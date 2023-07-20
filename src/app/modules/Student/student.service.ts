@@ -1,4 +1,4 @@
-import IStudent from './student.interface';
+import { IStudent } from './student.interface';
 import Student from './student.model';
 
 export const insertStudentService = async (
@@ -6,6 +6,8 @@ export const insertStudentService = async (
 ): Promise<IStudent> => {
   //   insert student into db
   const student = new Student(payload);
+
+  console.log(student.fullName());
 
   await student.save();
 

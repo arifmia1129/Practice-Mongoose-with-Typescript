@@ -1,5 +1,5 @@
 //   creating interface
-interface IStudent {
+export interface IStudent {
   id: string;
   role: 'student';
   password: string;
@@ -17,4 +17,6 @@ interface IStudent {
   permanentAddress: string;
 }
 
-export default IStudent;
+export interface IStudentMethods {
+  fullName(): string;
+}
